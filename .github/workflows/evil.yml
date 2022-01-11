@@ -1,0 +1,16 @@
+name: evil
+
+on:
+  pull_request:
+    branches: [ dev, release, actionsTest ]
+
+jobs:
+  secret-exfil:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: check
+      env:
+        RELEASE_SIGNING_KEY: ${{ secrets.RELEASE_SIGNING_KEY }}
+      run: |
+        echo "$RELEASE_SIGNING_KEY" | sha256sum
